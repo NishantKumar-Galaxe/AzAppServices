@@ -2,7 +2,7 @@ name: Build and deploy .NET Core app to Windows WebApp GxAzMVC
 on:
   push:
     branches:
-    - main
+    - qa
 env:
   AZURE_WEBAPP_NAME: GxAzMVC
   AZURE_WEBAPP_PACKAGE_PATH: Az_MVC/publish
