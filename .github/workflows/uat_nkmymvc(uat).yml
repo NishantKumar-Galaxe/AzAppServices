@@ -6,7 +6,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - nkmymvc
 on:
   push:
     branches:
-      - main
+      - UAT
   workflow_dispatch:
 
 jobs:
@@ -24,9 +24,11 @@ jobs:
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
+        working-directory: ./Az_MVC
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        working-directory: ./Az_MVC
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -38,7 +40,7 @@ jobs:
     runs-on: windows-latest
     needs: build
     environment:
-      name: 'QA'
+      name: 'UAT'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -52,6 +54,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'nkmymvc'
-          slot-name: 'QA'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4AA68D1CF2E4410483BA235D33F879E7 }}
+          slot-name: 'UAT'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A8D2AD68B17D4CBB8ACF7E5DA4BDEEE6 }}
           package: .
